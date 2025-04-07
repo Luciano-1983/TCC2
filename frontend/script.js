@@ -192,20 +192,26 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection(initialScreen);
     });
 
+    // === Exclusão do Cadastro ===
     excluirCadastroButton.addEventListener('click', async () => {
         if (confirm('Tem certeza que deseja excluir seu cadastro? Esta ação não poderá ser desfeita.')) {
-            // Remove o profissional do array de profissionais
-            profissionais = profissionais.filter(p => p.id !== profissionalLogado.id);
+            try {
+                const response = await fetch(`http://localhost:5000/api/professionals/${profissionalLogado.id}`, {
+                    method: 'DELETE',
+                });
 
-            // Atualiza o localStorage
-            localStorage.setItem('profissionais', JSON.stringify(profissionais));
-
-            // Limpa o localStorage do profissional logado
-            localStorage.removeItem('logado');
-            profissionalLogado = null;
-
-            // Redireciona para a tela inicial
-            showSection(initialScreen);
+                if (response.ok) {
+                    alert('Cadastro excluído com sucesso!');
+                    localStorage.removeItem('logado');
+                    profissionalLogado = null;
+                    showSection(initialScreen);
+                } else {
+                    alert('Erro ao excluir cadastro.');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir cadastro:', error);
+                alert('Erro ao excluir cadastro.');
+            }
         }
     });
 
@@ -216,17 +222,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editarRegisterProfissionalForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
-        profissionalLogado.nome = document.getElementById('editar-profissional-nome').value;
-        profissionalLogado.telefone = document.getElementById('editar-profissional-telefone').value;
-        profissionalLogado.cidade = document.getElementById('editar-profissional-cidade').value;
-        profissionalLogado.especialidade = document.getElementById('editar-profissional-especialidade').value;
-        profissionalLogado.registro = document.getElementById('editar-profissional-registro').value;
-
-        // Atualiza no localStorage
-        localStorage.setItem('logado', JSON.stringify(profissionalLogado));
-
-        showProfissionalDashboard(profissionalLogado);
+    
+        const nome = document.getElementById('editar-profissional-nome').value;
+        const telefone = document.getElementById('editar-profissional-telefone').value;
+        const cidade = document.getElementById('editar-profissional-cidade').value;
+        const especialidade = document.getElementById('editar-profissional-especialidade').value;
+        const registro = document.getElementById('editar-profissional-registro').value; // Campo de registro
+        const email = document.getElementById('editar-profissional-email').value; // Campo de email
+        const senha = document.getElementById('editar-profissional-senha').value; // Campo de senha
+    
+        // Crie um objeto para os dados a serem enviados
+        const updatedData = {
+            nome,
+            telefone,
+            cidade,
+            especialidade,
+            email,
+            senha,
+        };
+    
+        // Se a especialidade não for "cuidador", adicione o registro
+        if (especialidade !== 'cuidador') {
+            updatedData.registro = registro; // Adiciona o registro apenas se não for cuidador
+        }
+    
+        try {
+            const response = await fetch(`http://localhost:5000/api/professionals/${profissionalLogado.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData),
+            });
+    
+            if (response.ok) {
+                const updatedProfissional = await response.json();
+                localStorage.setItem('logado', JSON.stringify(updatedProfissional));
+                profissionalLogado = updatedProfissional;
+                showProfissionalDashboard(updatedProfissional);
+                alert('Dados atualizados com sucesso!');
+            } else {
+                const errorText = await response.text();
+                console.error('Erro ao atualizar dados:', errorText);
+                alert(`Erro ao atualizar dados: ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar dados:', error);
+            alert('Erro ao atualizar dados. Verifique o console para mais detalhes.');
+        }
     });
 
     // === Listeners e lógica da tela de busca do usuário ===

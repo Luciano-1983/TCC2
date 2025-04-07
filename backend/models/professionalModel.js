@@ -22,6 +22,22 @@ const ProfessionalModel = {
         return rows;
     },
 
+    update: async (id, data) => {
+        const { nome, telefone, email, cidade, especialidade, registro, senha } = data;
+        const result = await pool.query('UPDATE profissionais SET nome = $1, telefone = $2, email = $3, cidade = $4, especialidade = $5, registro = $6, senha = $7 WHERE id = $8 RETURNING *', [nome, telefone, email, cidade, especialidade, registro, senha, id]);
+        return result.rows[0];
+    },
+
+    delete: async (id) => {
+        try {
+            const result = await pool.query('DELETE FROM profissionais WHERE id = $1 RETURNING *', [id]);
+            return result.rows[0]; // Retorna o profissional excluído, se encontrado
+        } catch (error) {
+            console.error('Erro ao excluir profissional no modelo:', error);
+            throw error; // Lança o erro para ser tratado no controlador
+        }
+    },
+
 };
 
 module.exports = ProfessionalModel;
