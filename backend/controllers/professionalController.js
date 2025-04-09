@@ -39,19 +39,41 @@ const ProfessionalController = {
 
     update: async (req, res) => {
         const { id } = req.params;
-        const updatedData = req.body; // Atualiza todos os dados do profissional
-
+        const updatedData = req.body;
+    
+        // Basic validation
+        if (!id || !updatedData) {
+            return res.status(400).json({ message: 'Dados inválidos' });
+        }
+    
         try {
+            // Validate required fields
+            const requiredFields = ['nome', 'email', 'senha', 'telefone', 'cidade', 'especialidade'];
+            for (const field of requiredFields) {
+                if (!updatedData[field]) {
+                    return res.status(400).json({ 
+                        message: `Campo obrigatório faltando: ${field}` 
+                    });
+                }
+            }
+    
             const updatedProfessional = await ProfessionalModel.update(id, updatedData);
+            
             if (!updatedProfessional) {
                 return res.status(404).json({ message: 'Profissional não encontrado' });
             }
+            
             res.json(updatedProfessional);
         } catch (error) {
             console.error('Erro ao atualizar profissional:', error);
-            res.status(500).json({ message: 'Erro ao atualizar profissional' });
+            res.status(500).json({ 
+                message: 'Erro ao atualizar profissional',
+                error: error.message 
+            });
         }
     },
+    
+
 
     delete: async (req, res) => {
         const { id } = req.params;

@@ -180,6 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection(editarProfissionalFormSection);
         // Pré-preenche os campos do formulário de edição com os dados atuais
         document.getElementById('editar-profissional-nome').value = profissionalLogado.nome;
+        document.getElementById('editar-profissional-email').value = profissionalLogado.email; // Campo de email
+        document.getElementById('editar-profissional-senha').value = profissionalLogado.senha; // Campo de senha
         document.getElementById('editar-profissional-telefone').value = profissionalLogado.telefone;
         document.getElementById('editar-profissional-cidade').value = profissionalLogado.cidade;
         document.getElementById('editar-profissional-especialidade').value = profissionalLogado.especialidade;
@@ -220,57 +222,48 @@ document.addEventListener('DOMContentLoaded', () => {
         showProfissionalDashboard(profissionalLogado);
     });
 
+    
     editarRegisterProfissionalForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-    
-        const nome = document.getElementById('editar-profissional-nome').value;
-        const telefone = document.getElementById('editar-profissional-telefone').value;
-        const cidade = document.getElementById('editar-profissional-cidade').value;
-        const especialidade = document.getElementById('editar-profissional-especialidade').value;
-        const registro = document.getElementById('editar-profissional-registro').value; // Campo de registro
-        const email = document.getElementById('editar-profissional-email').value; // Campo de email
-        const senha = document.getElementById('editar-profissional-senha').value; // Campo de senha
-    
-        // Crie um objeto para os dados a serem enviados
+        
         const updatedData = {
-            nome,
-            telefone,
-            cidade,
-            especialidade,
-            email,
-            senha,
+            nome: document.getElementById('editar-profissional-nome').value,
+            email: document.getElementById('editar-profissional-email').value,
+            senha: document.getElementById('editar-profissional-senha').value,
+            telefone: document.getElementById('editar-profissional-telefone').value,
+            cidade: document.getElementById('editar-profissional-cidade').value,
+            especialidade: document.getElementById('editar-profissional-especialidade').value,
+            registro: document.getElementById('editar-profissional-registro')?.value
         };
     
-        // Se a especialidade não for "cuidador", adicione o registro
-        if (especialidade !== 'cuidador') {
-            updatedData.registro = registro; // Adiciona o registro apenas se não for cuidador
-        }
+        // Adiciona um log para verificar os dados que estão sendo enviados
+        console.log("Updating professional with data:", updatedData); // Debug log
     
         try {
             const response = await fetch(`http://localhost:5000/api/professionals/${profissionalLogado.id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedData),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
             });
     
-            if (response.ok) {
-                const updatedProfissional = await response.json();
-                localStorage.setItem('logado', JSON.stringify(updatedProfissional));
-                profissionalLogado = updatedProfissional;
-                showProfissionalDashboard(updatedProfissional);
-                alert('Dados atualizados com sucesso!');
-            } else {
-                const errorText = await response.text();
-                console.error('Erro ao atualizar dados:', errorText);
-                alert(`Erro ao atualizar dados: ${errorText}`);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update');
             }
+    
+            const updatedProfissional = await response.json();
+            localStorage.setItem('logado', JSON.stringify(updatedProfissional));
+            profissionalLogado = updatedProfissional;
+            showProfissionalDashboard(updatedProfissional);
+            alert('Dados atualizados com sucesso!');
         } catch (error) {
-            console.error('Erro ao atualizar dados:', error);
-            alert('Erro ao atualizar dados. Verifique o console para mais detalhes.');
+            console.error("Update error:", error);
+            alert(`Erro ao atualizar: ${error.message}`);
         }
     });
+    
+
+
 
     // === Listeners e lógica da tela de busca do usuário ===
     voltarInicialBuscaButton.addEventListener('click', () => {
