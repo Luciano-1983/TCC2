@@ -4,13 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Cuidadores</title>
+  
+  <!-- Importação de estilos CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- Importação de JavaScript (modular) -->
   <script src="script.js" type="module"></script>
+
+  <!-- Importa ícones do Google Material Symbols -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Manifesto para PWA -->
   <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
+  <!-- Cabeçalho com título e navegação -->
   <header>
     <h1>Sistema de Cuidadores</h1>
     <nav id="main-nav">
@@ -21,10 +30,12 @@
   </header>
 
   <main>
+    <!-- Tela inicial com apresentação do serviço -->
     <section id="initial-screen">
       <h2>Encontre o Cuidador Ideal para Seus Entes Queridos</h2>
       <p>Conectamos famílias a profissionais de saúde especializados em cuidados domiciliares</p>
 
+      <!-- Descrição das funções de cada tipo de profissional -->
       <h3>Funções dos Profissionais de Saúde</h3>
       <div id="funcoes-profissionais">
         <div>
@@ -62,63 +73,71 @@
         </div>
       </div>
 
+      <!-- Botões da tela inicial -->
       <div id="initial-buttons">
         <button id="sou-profissional">Sou Profissional</button>
         <button id="busco-profissional">Busco Profissional</button>
       </div>
     </section>
 
+    <!-- Login de Profissional -->
     <section id="profissional-login" class="hidden">
       <h2>Login Profissional</h2>
       <form id="profissional-login-form">
         <label for="profissional-login-email">Email:</label>
-        <input type="email" id="profissional-login-email" name="profissional-login-email" required>
+        <input type="email" id="profissional-login-email" required>
+
         <label for="profissional-login-password">Senha:</label>
-        <input type="password" id="profissional-login-password" name="profissional-login-password" required>
+        <input type="password" id="profissional-login-password" required>
+
         <button type="submit">Entrar</button>
         <button type="button" id="profissional-register">Registrar</button>
         <button type="button" id="voltar-inicial-profissional-login">Voltar</button>
       </form>
     </section>
 
+    <!-- Cadastro de Profissional -->
     <section id="profissional-register-form" class="hidden">
       <h2>Cadastro Profissional</h2>
       <form id="register-profissional-form">
+        <!-- Campos de cadastro -->
         <label for="profissional-nome">Nome:</label>
-        <input type="text" id="profissional-nome" name="profissional-nome" required>
+        <input type="text" id="profissional-nome" required>
 
         <label for="profissional-telefone">Telefone:</label>
-        <input type="tel" id="profissional-telefone" name="profissional-telefone" required>
+        <input type="tel" id="profissional-telefone" required>
 
         <label for="profissional-email">Email:</label>
-        <input type="email" id="profissional-email" name="profissional-email" required>
+        <input type="email" id="profissional-email" required>
 
         <label for="profissional-cidade">Cidade:</label>
-        <input type="text" id="profissional-cidade" name="profissional-cidade" required>
+        <input type="text" id="profissional-cidade" required>
 
         <label for="profissional-especialidade">Especialidade:</label>
-        <select id="profissional-especialidade" name="profissional-especialidade" required>
+        <select id="profissional-especialidade" required>
           <option value="Cuidador">Cuidador</option>
           <option value="Técnico de Enfermagem">Técnico de Enfermagem</option>
           <option value="Enfermeiro">Enfermeiro</option>
         </select>
 
         <label for="profissional-registro">Registro Profissional:</label>
-        <input type="text" id="profissional-registro" name="profissional-registro" required>
+        <input type="text" id="profissional-registro" required>
 
         <label for="profissional-senha">Senha:</label>
-        <input type="password" id="profissional-senha" name="profissional-senha" required>
+        <input type="password" id="profissional-senha" required>
 
         <button type="submit">Cadastrar</button>
         <button type="button" id="voltar-login">Voltar</button>
       </form>
     </section>
 
+    <!-- Painel do Profissional -->
     <section id="profissional-dashboard" class="hidden">
       <h2>Dashboard Profissional</h2>
       <p>Bem-vindo(a), <span id="profissional-nome-exibicao"></span>!</p>
 
       <h3>Meus Dados</h3>
+      <!-- Exibição dos dados cadastrados -->
       <div id="profissional-dados">
         <p><strong>Nome:</strong> <span id="profissional-nome-valor"></span></p>
         <p><strong>Telefone:</strong> <span id="profissional-telefone-valor"></span></p>
@@ -127,49 +146,54 @@
         <p><strong>Registro:</strong> <span id="profissional-registro-valor"></span></p>
       </div>
 
+      <!-- Ações do profissional -->
       <button id="editar-dados">Editar Dados</button>
       <button id="logout-profissional">Logout</button>
       <button id="excluir-cadastro">Excluir Cadastro</button>
     </section>
 
+    <!-- Formulário de Edição -->
     <section id="editar-profissional-form" class="hidden">
       <h2>Editar Dados Profissional</h2>
       <form id="editar-register-profissional-form">
+        <!-- Campos de edição -->
         <label for="editar-profissional-nome">Nome:</label>
-        <input type="text" id="editar-profissional-nome" name="editar-profissional-nome" required>
+        <input type="text" id="editar-profissional-nome" required>
 
         <label for="editar-profissional-email">Email:</label>
-        <input type="text" id="editar-profissional-email" name="editar-profissional-email" required>
+        <input type="text" id="editar-profissional-email" required>
 
         <label for="editar-profissional-senha">Senha:</label>
-        <input type="password" id="editar-profissional-senha" name="editar-profissional-senha" required>
+        <input type="password" id="editar-profissional-senha" required>
 
         <label for="editar-profissional-telefone">Telefone:</label>
-        <input type="tel" id="editar-profissional-telefone" name="editar-profissional-telefone" required>
+        <input type="tel" id="editar-profissional-telefone" required>
 
         <label for="editar-profissional-cidade">Cidade:</label>
-        <input type="text" id="editar-profissional-cidade" name="editar-profissional-cidade" required>
+        <input type="text" id="editar-profissional-cidade" required>
 
         <label for="editar-profissional-especialidade">Especialidade:</label>
-        <select id="editar-profissional-especialidade" name="editar-profissional-especialidade" required>
+        <select id="editar-profissional-especialidade" required>
           <option value="Cuidador">Cuidador</option>
           <option value="Técnico de Enfermagem">Técnico de Enfermagem</option>
           <option value="Enfermeiro">Enfermeiro</option>
         </select>
 
         <label for="editar-profissional-registro">Registro Profissional:</label>
-        <input type="text" id="editar-profissional-registro" name="editar-profissional-registro">
+        <input type="text" id="editar-profissional-registro">
 
         <button type="submit">Salvar Alterações</button>
         <button type="button" id="cancelar-edicao">Cancelar</button>
       </form>
     </section>
 
+    <!-- Tela de busca de profissionais -->
     <section id="usuario-busca" class="hidden">
       <h2>Buscar Profissional</h2>
       <form id="busca-profissional-form">
+        <!-- Filtros de busca -->
         <label for="busca-especialidade">Especialidade:</label>
-        <select id="busca-especialidade" name="busca-especialidade">
+        <select id="busca-especialidade">
           <option value="">Qualquer</option>
           <option value="Cuidador">Cuidador</option>
           <option value="Técnico de Enfermagem">Técnico de Enfermagem</option>
@@ -177,20 +201,21 @@
         </select>
 
         <label for="busca-cidade">Cidade:</label>
-        <input type="text" id="busca-cidade" name="busca-cidade">
+        <input type="text" id="busca-cidade">
 
         <button type="submit">Buscar</button>
         <button type="button" id="voltar-inicial-busca">Voltar</button>
       </form>
 
+      <!-- Resultados da busca -->
       <div id="resultados-busca" class="hidden">
         <h3>Resultados da Busca</h3>
         <ul id="lista-profissionais"></ul>
       </div>
     </section>
 
+    <!-- Script que carrega os profissionais automaticamente -->
     <script>
-      // Assuming buscaProfissionais is a function that fetches professionals
       buscaProfissionais().then((profissionais) => {
         const listaProfissionais = document.getElementById('lista-profissionais');
         profissionais.forEach((profissional) => {
@@ -209,32 +234,34 @@
       });
     </script>
 
-    <!-- Seção de Login do Usuário -->
+    <!-- Login de Usuário -->
     <section id="usuario-login" class="hidden">
       <h2>Login Usuário</h2>
       <form id="usuario-login-form">
         <label for="usuario-login-email">Email:</label>
-        <input type="email" id="usuario-login-email" name="usuario-login-email" required>
+        <input type="email" id="usuario-login-email" required>
+
         <label for="usuario-login-password">Senha:</label>
-        <input type="password" id="usuario-login-password" name="usuario-login-password" required>
+        <input type="password" id="usuario-login-password" required>
+
         <button type="submit">Entrar</button>
         <button type="button" id="usuario-register">Registrar</button>
         <button type="button" id="voltar-inicial-usuario-login">Voltar</button>
       </form>
     </section>
 
-    <!-- Seção de Registro do Usuário -->
+    <!-- Cadastro de Usuário -->
     <section id="usuario-register-form" class="hidden">
       <h2>Cadastro Usuário</h2>
       <form id="register-usuario-form">
         <label for="usuario-nome">Nome:</label>
-        <input type="text" id="usuario-nome" name="usuario-nome" required>
+        <input type="text" id="usuario-nome" required>
 
         <label for="usuario-email">Email:</label>
-        <input type="email" id="usuario-email" name="usuario-email" required>
+        <input type="email" id="usuario-email" required>
 
         <label for="usuario-senha">Senha:</label>
-        <input type="password" id="usuario-senha" name="usuario-senha" required>
+        <input type="password" id="usuario-senha" required>
 
         <button type="submit">Cadastrar</button>
         <button type="button" id="voltar-login-usuario">Voltar</button>
@@ -242,6 +269,7 @@
     </section>
   </main>
 
+  <!-- Rodapé do site -->
   <footer>
     <p>&copy; 2024 Sistema de Cuidadores</p>
   </footer>
